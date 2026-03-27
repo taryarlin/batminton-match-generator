@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badminton Duel Match Generator</title>
+    <meta name="description" content="Generate random badminton duel matches easily.">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-animation"></div>
+    <main class="container">
+        <header>
+            <h1>Badminton Duels</h1>
+            <p>Generate random matches for your games</p>
+        </header>
+
+        <section class="card players-card">
+            <div class="card-header">
+                <h2>Players (<span id="player-count">0</span>)</h2>
+            </div>
+            
+            <form id="add-player-form" class="input-group">
+                <input type="text" id="new-player-input" placeholder="Enter player name" autocomplete="off" required>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+
+            <ul id="players-list" class="players-list">
+                <!-- Players will be injected here -->
+            </ul>
+        </section>
+
+        <div class="action-section">
+            <button id="generate-btn" class="btn btn-large btn-accent">
+                <span class="icon">🏸</span> Generate Match Players
+            </button>
+        </div>
+
+        <section class="card matches-card hidden" id="matches-section">
+            <div class="card-header">
+                <h2>Generated Matches</h2>
+            </div>
+            <div id="matches-container" class="matches-container">
+                <!-- Matches will be injected here -->
+            </div>
+            
+            <div id="waiting-section" class="waiting-section hidden">
+                <h3>Waiting Lounge</h3>
+                <div id="waiting-players" class="waiting-players"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
