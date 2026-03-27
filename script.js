@@ -99,8 +99,8 @@ function isValidTeam(p1, p2) {
 }
 
 function generateMatches() {
-    if (players.length < 4) {
-        alert("You need at least 4 players to make a duel match!");
+    if (players.length < 2) {
+        alert("You need at least 2 players to make a team!");
         return;
     }
 
@@ -109,41 +109,35 @@ function generateMatches() {
     let attempts = 0;
     const MAX_ATTEMPTS = 1000;
     
-    const totalMatches = Math.floor(players.length / 4);
-    let matches = [];
+    // Group players strictly into teams of 2
+    const totalTeams = Math.floor(players.length / 2);
+    let teams = [];
     let waiting = [];
 
     // Keep shuffling until we find a combination that satisfies all rules
     while (!validLayoutFound && attempts < MAX_ATTEMPTS) {
         shuffled = shuffleArray(players);
-        matches = [];
+        teams = [];
         let isValid = true;
         
-        for (let i = 0; i < totalMatches; i++) {
-            const baseIndex = i * 4;
-            const tA_p1 = shuffled[baseIndex];
-            const tA_p2 = shuffled[baseIndex + 1];
-            const tB_p1 = shuffled[baseIndex + 2];
-            const tB_p2 = shuffled[baseIndex + 3];
+        for (let i = 0; i < totalTeams; i++) {
+            const p1 = shuffled[i * 2];
+            const p2 = shuffled[i * 2 + 1];
             
             // Check if any generated team violates our rules
-            if (!isValidTeam(tA_p1, tA_p2) || !isValidTeam(tB_p1, tB_p2)) {
+            if (!isValidTeam(p1, p2)) {
                 isValid = false;
                 break;
             }
             
-            matches.push({
-                teamA: [tA_p1, tA_p2],
-                teamB: [tB_p1, tB_p2]
-            });
+            teams.push([p1, p2]);
         }
         
         if (isValid) {
             validLayoutFound = true;
-            // Remaining unmatched players go to waiting lounge
-            const remainder = shuffled.length % 4;
-            if (remainder > 0) {
-                waiting = shuffled.slice(totalMatches * 4);
+            // Remaining unmatched player goes to waiting lounge (if odd number)
+            if (shuffled.length % 2 !== 0) {
+                waiting = [shuffled[shuffled.length - 1]];
             }
         }
         
@@ -155,38 +149,31 @@ function generateMatches() {
         return;
     }
     
-    renderMatches(matches, waiting);
+    renderMatches(teams, waiting);
 }
 
-function renderMatches(matches, waiting) {
+function renderMatches(teams, waiting) {
     matchesContainer.innerHTML = '';
     
-    matches.forEach((match, index) => {
+    teams.forEach((team, index) => {
         const delay = index * 0.15; // stagger animation
-        const matchHTML = `
-            <div class="match-box" style="animation-delay: ${delay}s">
-                <div class="match-title">Match ${index + 1}</div>
-                <div class="teams-wrapper">
-                    <div class="team team-a">
-                        <div class="team-player">${match.teamA[0]}</div>
-                        <div class="team-player">${match.teamA[1]}</div>
-                    </div>
-                    <div class="vs-badge">VS</div>
-                    <div class="team team-b">
-                        <div class="team-player">${match.teamB[0]}</div>
-                        <div class="team-player">${match.teamB[1]}</div>
-                    </div>
+        const teamHTML = `
+            <div class="team-box" style="animation-delay: ${delay}s">
+                <div class="team-title">Team ${index + 1}</div>
+                <div class="team-roster">
+                    <div class="team-player">${team[0]}</div>
+                    <div class="team-player">${team[1]}</div>
                 </div>
             </div>
         `;
-        matchesContainer.insertAdjacentHTML('beforeend', matchHTML);
+        matchesContainer.insertAdjacentHTML('beforeend', teamHTML);
     });
     
     if (waiting.length > 0) {
         waitingSection.classList.remove('hidden');
         waitingPlayersEl.innerHTML = '';
         waiting.forEach((player, i) => {
-            const delay = (matches.length * 0.15) + (i * 0.1);
+            const delay = (teams.length * 0.15) + (i * 0.1);
             const span = document.createElement('span');
             span.className = 'waiting-player';
             span.textContent = player;

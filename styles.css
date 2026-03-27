@@ -271,13 +271,14 @@ input[type="text"]:focus {
     display: none !important;
 }
 
-.matches-container {
-    display: flex;
-    flex-direction: column;
+/* Teams Grid replacing Matches */
+.teams-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
 }
 
-.match-box {
+.team-box {
     background: rgba(15, 23, 42, 0.5);
     border: 1px solid var(--card-border);
     border-radius: 16px;
@@ -287,7 +288,7 @@ input[type="text"]:focus {
     animation: slideIn 0.4s ease-out backwards;
 }
 
-.match-box::before {
+.team-box::before {
     content: '';
     position: absolute;
     top: 0;
@@ -297,7 +298,7 @@ input[type="text"]:focus {
     background: linear-gradient(to bottom, var(--accent), var(--secondary));
 }
 
-.match-title {
+.team-title {
     font-size: 1.1rem;
     color: var(--text-muted);
     margin-bottom: 1rem;
@@ -306,22 +307,13 @@ input[type="text"]:focus {
     font-weight: 600;
 }
 
-.teams-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-}
-
-.team {
-    flex: 1;
+.team-roster {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    align-items: stretch;
 }
 
-.team-player {
+.team-roster .team-player {
     background: rgba(255, 255, 255, 0.08);
     padding: 0.6rem 1rem;
     border-radius: 8px;
@@ -331,28 +323,7 @@ input[type="text"]:focus {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.team-a .team-player {
     border-left: 2px solid var(--accent);
-}
-
-.team-b .team-player {
-    border-right: 2px solid var(--secondary);
-}
-
-.vs-badge {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 0.5rem;
-    border-radius: 50%;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
-    height: 40px;
 }
 
 .waiting-section {
@@ -451,30 +422,11 @@ input[type="text"]:focus {
         padding: 0.4rem 0.8rem;
     }
     
-    .teams-wrapper {
-        flex-direction: column;
-        gap: 0.75rem;
+    .teams-grid {
+        grid-template-columns: 1fr;
     }
     
-    .vs-badge {
-        transform: rotate(0deg);
-        width: 36px;
-        height: 36px;
-        min-width: 36px;
-        font-size: 0.8rem;
-        margin: 0 auto;
-    }
-    
-    .team {
-        width: 100%;
-    }
-    
-    .team-b .team-player {
-        border-right: none;
-        border-left: 2px solid var(--secondary);
-    }
-    
-    .team-player {
+    .team-roster .team-player {
         padding: 0.75rem 1rem;
         font-size: 0.95rem;
     }
